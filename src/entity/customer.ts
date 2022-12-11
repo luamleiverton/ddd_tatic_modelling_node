@@ -8,6 +8,8 @@ export default class Customer {
     private _name: string="";
     private _address!: Address;
     private _active: boolean;
+    private _rewardPoints: number = 0;
+
 
     constructor(id: string, name: string) {
         this._id = id;
@@ -31,6 +33,14 @@ export default class Customer {
 
     set Address(address: Address){
         this._address = address
+    }
+
+    get rewardPoints(): number {
+        return this._rewardPoints
+    }
+
+    addRewardPoints(points: number) {
+        this._rewardPoints += points;
     }
 
     //imbuir com comportamentos - regras de negócio - expressividade dos métodos refletindo seus objetivos
