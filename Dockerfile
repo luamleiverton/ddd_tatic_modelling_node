@@ -7,6 +7,8 @@ RUN npm i tslint --save-dev
 RUN npm i -D jest @types/jest ts-node --save-dev
 RUN npm i -D @swc/jest @swc/cli @swc/core
 RUN npm i uuid @types/uuid
+RUN npm install sequelize reflect-metadata sequelize-typescript
+RUN npm install sqlite3
 COPY . .
 EXPOSE 3333
 CMD [ "node", "server.js" ]
