@@ -5,5 +5,5 @@ export default interface RepositoryInterface<T> {
     //recebe um id e retorna uma entidade completa T
     find(id: string): Promise<T>;
     //retorna uma lista das entidades T
-    findAll(): Promise<T>[];
+    findAll(): Promise<T[]>;
 } 
