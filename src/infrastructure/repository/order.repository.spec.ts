@@ -91,37 +91,43 @@ describe("Order repository test", () => {
         const address = new Address("s1", 1, "zip1", "city1");
         customer.changeAddress(address);
 
-        await customerRepository.create(customer);
+        const customer2 = new Customer("c2", "customer2")
+        const address2 = new Address("s2", 2, "zip2", "city2");
+        customer2.changeAddress(address);
 
+        await customerRepository.create(customer);
+        await customerRepository.create(customer2);
 
         const productRepository = new ProductRepository();
         const product1 = new Product("p1", "product1", 10);
-        const product2 = new Product("p2", "product1", 20);
+        const product2 = new Product("p2", "product2", 15);
+
 
         await productRepository.create(product1);
-        await productRepository.create(product2);
 
 
         const orderRepository = new OrderRepository();
+
         const orderItem = new OrderItem("1", product1.name, product1.price, product1.id, 2);
+        const orderItem2 = new OrderItem("2", product2.name, product2.price, product2.id, 3);
         const order = new Order("o1", "c1", [orderItem]);
 
         await orderRepository.create(order);
 
-        const orderItem2 = new OrderItem("2", product2.name, product2.price, product2.id, 2);
-        order.items.push(orderItem2)
+        order.changeCustomer("c2");
+        order.changeItem("1", orderItem2);
 
+              
         await orderRepository.update(order);
 
         const orderModel = await OrderModel.findOne({where: {id: order.id}, include: ['items'], });
 
-        expect(orderModel?.items).toHaveLength(2);
         expect(orderModel?.toJSON()).toStrictEqual({
-            id: order.id,
-            customer_id: customer.id,
+            id: "o1",
+            customer_id: customer2.id,
             total: order.total(),
             items: order.items.map((orderItem) => ({
-                id: orderItem.id,
+                id: "1",
                 name: orderItem.name,
                 price: orderItem.price,
                 quantity: orderItem.quantity,

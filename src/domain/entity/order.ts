@@ -1,3 +1,4 @@
+import { TableHints } from "sequelize";
 import OrderItem from "./order_item";
 
 export default class Order{
@@ -15,10 +16,21 @@ export default class Order{
         this.validate()
     }
 
-    addItem(item: OrderItem): void {
-        this.items.push(item)
+   
+    changeCustomer(id: string): void {
+        this._customerId = id;
     }
 
+    changeItem(id: string, item: OrderItem): void {
+        var itemFound = this._items.find(item => item.id === id);
+        itemFound = item;
+    }
+
+    get items(): OrderItem[]{
+        return this._items;
+    }
+
+    
     total(): number {
         return this._items.reduce((acc, item) => acc + item.orderItemTotal(), 0);
     }
@@ -32,9 +44,6 @@ export default class Order{
         return this._customerId;
     }
 
-    get items(): OrderItem[] {
-        return this._items;
-    }
 
 
     validate(): boolean {
